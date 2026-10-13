@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # DailyHelp — Everyday Task Manager
 
 A full-stack task manager with a React/Vite interface, Spring Boot REST API, MySQL persistence, Flyway migrations, and session-based authentication. This is a hobby/MVP baseline, not a claim of production security certification.
@@ -79,3 +80,7 @@ Backend: `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, `CORS_ALLOWED_ORIGIN`, `PORT`, 
 - Service unit tests are included; full browser/E2E and real-MySQL integration coverage should be added before public launch.
 - Authentication is session/cookie based; CSRF protection is enabled. Production cookie settings and rate limiting require host-specific configuration/hardening.
 - `TaskService` currently treats missing and not-owned task IDs identically as 404, by design.
+=======
+# dailyhelp
+DailyHelp , Full-stack task management application built with React, Spring Boot and MySQL.
+>>>>>>> bce96cc23d92f3c538d3a7d12cdc26737ab92aad
