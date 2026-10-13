@@ -1,0 +1,10 @@
+package com.dailyhelp.controller;
+import com.dailyhelp.dto.TaskDtos.*;import com.dailyhelp.entity.*;import com.dailyhelp.repository.UserRepository;import com.dailyhelp.service.TaskService;import jakarta.validation.Valid;import java.net.URI;import org.springframework.data.domain.Page;import org.springframework.http.*;import org.springframework.security.core.Authentication;import org.springframework.web.bind.annotation.*;
+@RestController @RequestMapping("/api") public class TaskController {private final TaskService service;private final UserRepository users;public TaskController(TaskService service,UserRepository users){this.service=service;this.users=users;}private Long uid(Authentication a){return users.findByEmail(a.getName()).orElseThrow().getId();}
+ @GetMapping("/tasks") Page<TaskResponse> list(Authentication a,@RequestParam(required=false)String q,@RequestParam(required=false)TaskStatus status,@RequestParam(required=false)TaskPriority priority,@RequestParam(defaultValue="createdAt")String sort,@RequestParam(defaultValue="0")int page,@RequestParam(defaultValue="20")int size){return service.list(uid(a),q,status,priority,sort,page,size);}
+ @PostMapping("/tasks") ResponseEntity<TaskResponse> create(Authentication a,@Valid @RequestBody TaskRequest r){TaskResponse t=service.create(uid(a),r);return ResponseEntity.created(URI.create("/api/tasks/"+t.id())).body(t);}
+ @GetMapping("/tasks/{id}") TaskResponse get(Authentication a,@PathVariable Long id){return service.get(uid(a),id);}
+ @PutMapping("/tasks/{id}") TaskResponse update(Authentication a,@PathVariable Long id,@Valid @RequestBody TaskRequest r){return service.update(uid(a),id,r);}
+ @PatchMapping("/tasks/{id}/status") TaskResponse status(Authentication a,@PathVariable Long id,@Valid @RequestBody StatusRequest r){return service.status(uid(a),id,r.status());}
+ @DeleteMapping("/tasks/{id}") ResponseEntity<Void> delete(Authentication a,@PathVariable Long id){service.delete(uid(a),id);return ResponseEntity.noContent().build();}
+ @GetMapping("/dashboard") DashboardResponse dashboard(Authentication a){return service.dashboard(uid(a));}}

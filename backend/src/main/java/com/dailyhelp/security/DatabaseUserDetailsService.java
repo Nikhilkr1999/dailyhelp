@@ -1,0 +1,3 @@
+package com.dailyhelp.security;
+import com.dailyhelp.repository.UserRepository; import org.springframework.security.core.userdetails.*; import org.springframework.stereotype.Service;
+@Service public class DatabaseUserDetailsService implements UserDetailsService {private final UserRepository users; public DatabaseUserDetailsService(UserRepository users){this.users=users;} public UserDetails loadUserByUsername(String email){var u=users.findByEmail(email.toLowerCase()).orElseThrow(()->new UsernameNotFoundException("User not found"));return User.withUsername(u.getEmail()).password(u.getPasswordHash()).roles("USER").build();}}
